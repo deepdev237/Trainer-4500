@@ -1,4 +1,4 @@
-/*
+﻿/*
 A program egy mozgas.txt állományba menti az adatokat, ebből dolgozik. Az állomány sorai
 tabulátorral tagoltak, egy sorban a dátum (éééé.hh.nn formátumban) az edzés típusa(pl.
 futás, úszás, kondi stb.) és az időtartam (percben) található.
@@ -33,8 +33,10 @@ namespace Trainer_4500
         public string Type; // futás, kerékpár, úszás, súlyzós edzés
         public int Time; // perc
     }
+
     class Program
     {
+        //static List<string> edzesTipusok = new List<string>() { "futás", "kerékpár", "úszás", "súlyzós edzés" };
         static List<Edzes> edzesList = new List<Edzes>();
         static void MainMenu()
         {
@@ -62,15 +64,15 @@ namespace Trainer_4500
         static void NewTraining()
         {
             Console.Clear();
-            //Kérem adja meg a dátumot (éééé.hh.nn formátumban):
-            //Kérem adja meg az edzés típusát:
-            //Kérem adja meg az időtartamot (percben):
+
             DateTime date;
             string type;
             int time;
+
             Console.WriteLine("Új edzés");
             Console.WriteLine("Kérem adja meg a dátumot (éééé.hh.nn formátumban):");
             string input = Console.ReadLine();
+
             if (DateTime.TryParse(input, out date))
             {
                 Console.WriteLine("Kérem adja meg az edzés típusát:");
@@ -80,9 +82,11 @@ namespace Trainer_4500
                 if (int.TryParse(input, out time))
                 {
                     edzesList.Add(new Edzes() { Date = date, Type = type, Time = time });
-                    Console.WriteLine("Sikeresen hozzáadva");
                     saveToFile(date, type, time);
+
+                    Console.WriteLine("Sikeresen hozzáadva");
                     Console.ReadKey();
+
                     MainMenu();
                 }
                 else
@@ -102,10 +106,8 @@ namespace Trainer_4500
 
         static void saveToFile(DateTime date, string type, int time)
         {
-            // Save data to file
             string path = @"mozgas.txt";
-            //just add one line separated by tab
-            string line = $"{date}\t{type}\t{time}";
+            string line = $"{date}\t{type}\t{time} \n";
             System.IO.File.AppendAllText(path, line);
         }
 
@@ -125,7 +127,27 @@ namespace Trainer_4500
 
         static void AllDataFiltered()
         {
-            Console.WriteLine("Összes adat edzés szerint");
+            Console.Clear();
+            Console.WriteLine("Select the type of training to filter by:");
+
+            // Extract unique training types from edzesList
+            string[] trainingTypes = edzesList.Select(edzes => edzes.Type).Distinct().ToArray();
+
+            // Let the user select a type
+            int selectedOption = DisplayMenu(trainingTypes);
+            string filterType = trainingTypes[selectedOption];
+
+            Console.Clear();
+
+            Console.WriteLine("Filtered data \n");
+            Console.WriteLine("{0,-20} {1,-20} {2,-20}", "Date", "Type", "Time");
+            foreach (var edzes in edzesList)
+            {
+                if (edzes.Type.Equals(filterType, StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("{0,-20} {1,-20} {2,-20}", edzes.Date, edzes.Type, edzes.Time);
+                }
+            }
             Console.ReadKey();
             MainMenu();
         }
