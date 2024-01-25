@@ -1,4 +1,4 @@
-﻿/*
+/*
 A program egy mozgas.txt állományba menti az adatokat, ebből dolgozik. Az állomány sorai
 tabulátorral tagoltak, egy sorban a dátum (éééé.hh.nn formátumban) az edzés típusa(pl.
 futás, úszás, kondi stb.) és az időtartam (percben) található.
@@ -103,9 +103,10 @@ namespace Trainer_4500
         static void saveToFile(DateTime date, string type, int time)
         {
             // Save data to file
-            string path = @"C:\Users\krist\source\repos\Trainer 4500\Trainer 4500\bin\Debug\netcoreapp3.1\mozgas.txt";
-            string[] lines = { date.ToString("yyyy.MM.dd"), type, time.ToString() };
-            System.IO.File.AppendAllLines(path, lines);
+            string path = @"mozgas.txt";
+            //just add one line separated by tab
+            string line = $"{date}\t{type}\t{time}";
+            System.IO.File.AppendAllText(path, line);
         }
 
         static void AllData()
@@ -133,11 +134,18 @@ namespace Trainer_4500
         {
             //load data from mozgas.txt
             string path = @"mozgas.txt";
-            string[] lines = System.IO.File.ReadAllLines(path);
-            foreach (var line in lines)
+            if (System.IO.File.Exists(path))
             {
-                string[] data = line.Split('\t');
-                edzesList.Add(new Edzes() { Date = DateTime.Parse(data[0]), Type = data[1], Time = int.Parse(data[2]) });
+                string[] lines = System.IO.File.ReadAllLines(path);
+                foreach (var line in lines)
+                {
+                    string[] data = line.Split('\t');
+                    edzesList.Add(new Edzes() { Date = DateTime.Parse(data[0]), Type = data[1], Time = int.Parse(data[2]) });
+                }
+            }
+            else
+            {
+                Console.WriteLine($"File not found: {path}");
             }
             
             MainMenu();
