@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Trainer 4500/1.0.0": {
+        "runtime": {
+          "Trainer 4500.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Trainer 4500/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
